@@ -16,6 +16,9 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.l4_andro.Data.DataItem
+import com.example.l4_andro.Data.DataRepo
+import com.example.l4_andro.Data.MyDB
 import com.example.l4_andro.databinding.FragmentListBinding
 import com.example.l4_andro.databinding.ListItemBinding
 import com.example.l4_andro.databinding.DialogLayoutBinding
@@ -26,6 +29,7 @@ import com.example.l4_andro.databinding.DialogLayoutBinding
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
+val humanoids = arrayOf("Bird", "Fish", "Mammal")
 
 class ListFragment : Fragment() {
 
@@ -33,16 +37,17 @@ class ListFragment : Fragment() {
     private var param2: String? = null
 
     private lateinit var _binding: FragmentListBinding
-    val dataRepo = DataRepo.getInstance()
-    //val adapter = MyAdapter(dataRepo.getData())
+    private lateinit var dataRepo: DataRepo
+    private lateinit var adapter: MyAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        dataRepo = DataRepo.getInstance(requireContext())
+        adapter = MyAdapter(dataRepo.getData()!!)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-
     }
 
     override fun onCreateView(
@@ -53,40 +58,34 @@ class ListFragment : Fragment() {
         val recView = _binding.recView
         recView.layoutManager = LinearLayoutManager(requireContext())
 
-        val adapter = DataRepo.getInstance().getData()?.let { MyAdapter(it) }
+//        val adapter = DataRepo.getInstance().getData()?.let { MyAdapter(it) }
         recView.adapter = adapter
 
         return _binding.root
     }
 
-
-
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        /*
-                    "name" to currData.text_name,
-                    "spec" to currData.text_spec,
-                    "strength" to currData.item_strength,
-                    "danger" to currData.dangerous,
-                    "type" to currData.item_type,
-                    "humanoids" to currData.humanoids
-         */
-        parentFragmentManager.setFragmentResultListener("addNewItem", viewLifecycleOwner){ string, bundle ->
-            run {
-                if (bundle.getBoolean("toAdd")){
-                    val itemName = bundle.getString("name", "New animal")
-                    val itemSpec = bundle.getString("spec", "Some spec")
-                    val itemStrength = bundle.getInt("strength", 10)
-                    val itemDanger = bundle.getBoolean("danger", false)
-                    val itemType = bundle.getString("type", "Bird")
-                    val newItem = DataItem(itemName, itemSpec, itemStrength, itemType, itemDanger)
-                    dataRepo.addItem(newItem)
-                }
-            }
+//        parentFragmentManager.setFragmentResultListener("addNewItem", viewLifecycleOwner){ string, bundle ->
+//            run {
+//                if (bundle.getBoolean("toAdd")){
+//                    val itemName = bundle.getString("name", "New animal")
+//                    val itemSpec = bundle.getString("spec", "Some spec")
+//                    val itemStrength = bundle.getInt("strength", 10)
+//                    val itemDanger = bundle.getBoolean("danger", false)
+//                    val itemType = bundle.getString("type", "Bird")
+//                    val newItem = DataItem(itemName, itemSpec, itemStrength, itemType, itemDanger)
+//                    dataRepo.addItem(newItem)
+//                }
+//            }
+//        }
+        parentFragmentManager.setFragmentResultListener("addNewItem", this) {
+                requestKey, _ ->
+            adapter.data = dataRepo.getData()!!
+            adapter.notifyDataSetChanged()
         }
+
+        val humanoids = arrayOf("Bird", "Fish", "Mammal")
 
         setHasOptionsMenu(true)
     }
@@ -98,8 +97,6 @@ class ListFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId){
             R.id.menu_item_add -> {
-                //Toast.makeText(requireActivity(), "new item clicked!", Toast.LENGTH_SHORT).show()
-                //go to adder fragment
                 findNavController().navigate(R.id.action_listFragment_to_addFragment)
             }
         }
@@ -138,8 +135,8 @@ class ListFragment : Fragment() {
                     "spec" to currData.text_spec,
                     "strength" to currData.item_strength,
                     "danger" to currData.dangerous,
-                    "type" to currData.item_type,
-                    "humanoids" to currData.humanoids
+                    "type" to currData.item_type
+//                    "humanoids" to currData.humanoids
                     )
                 )
                 findNavController().navigate(R.id.action_listFragment_to_showFragment)
@@ -149,7 +146,8 @@ class ListFragment : Fragment() {
                 val builder = AlertDialog.Builder(requireActivity())
                 builder.setTitle("Delete Dialog")
                     .setPositiveButton("Accept") { dialog, which ->
-                        if (dataRepo.deleteItem(position))
+                        if (dataRepo.deleteItem(currData))
+                            data = dataRepo.getData()!!
                             notifyDataSetChanged()
                         true
                         Toast.makeText(requireActivity(), "deleted", Toast.LENGTH_SHORT).show()

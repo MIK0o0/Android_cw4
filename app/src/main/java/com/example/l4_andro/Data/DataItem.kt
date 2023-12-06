@@ -1,15 +1,26 @@
-package com.example.l4_andro;
+package com.example.l4_andro.Data;
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlin.random.Random
 import kotlin.random.nextInt
 
+val humanoids = arrayOf("Bird", "Fish", "Mammal")
+@Entity(tableName = "item_table")
 class DataItem {
-    val humanoids = arrayOf("Bird", "Fish", "Mammal")
 
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
+    @ColumnInfo(name = "name")
     var text_name : String = "Default aniamal name"
+    @ColumnInfo(name = "spec")
     var text_spec : String = "Default specification"
+    @ColumnInfo(name = "strength")
     var item_strength : Int = Random.nextInt(0, 100)
+    @ColumnInfo(name = "item_type")
     var item_type : String = humanoids[Random.nextInt(0, 3)]
+    @ColumnInfo(name = "is_dangerous")
     var dangerous : Boolean = Random.nextBoolean()
 
     constructor()
