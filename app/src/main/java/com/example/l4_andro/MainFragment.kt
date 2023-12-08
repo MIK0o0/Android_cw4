@@ -33,9 +33,8 @@ class MainFragment : Fragment() {
         invitation=view.invitationText
         authorName=view.authorNameTxt
         authorSurname=view.authorSurnameTxt
-        imageMain=view.invitationImage
+        imageMain=view.mainImage
         setting=view.additionalSetting
-
 
         return view.root
     }

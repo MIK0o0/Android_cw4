@@ -42,12 +42,12 @@ class Fragment2 : Fragment() {
         rad3 = _binding.editImg3
         saveButton = _binding.saveButtonTab2
         saveButton.setOnClickListener {_->
-            val data = requireActivity().getSharedPreferences("additional", Context.MODE_PRIVATE)
+            val data = requireActivity().getSharedPreferences("L4_preferences", Context.MODE_PRIVATE)
             val editor = data.edit()
             when(radioGr.checkedRadioButtonId){
-                rad1.id -> editor.putString("str2", "Setting 1")
-                rad2.id -> editor.putString("str2", "Setting 2")
-                rad3.id -> editor.putString("str2", "Setting 3")
+                rad1.id -> editor.putInt("image", R.drawable.baseline_emoji_people_24)
+                rad2.id -> editor.putInt("image", R.drawable.bird)
+                rad3.id -> editor.putInt("image", R.drawable.fish)
             }
             editor.apply()
         }

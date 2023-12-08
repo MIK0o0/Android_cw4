@@ -146,10 +146,11 @@ class ListFragment : Fragment() {
                 val builder = AlertDialog.Builder(requireActivity())
                 builder.setTitle("Delete Dialog")
                     .setPositiveButton("Accept") { dialog, which ->
-                        if (dataRepo.deleteItem(currData))
+                        if (dataRepo.deleteItem(currData)) {
                             data = dataRepo.getData()!!
                             notifyDataSetChanged()
-                        true
+                            true
+                        }else false
                         Toast.makeText(requireActivity(), "deleted", Toast.LENGTH_SHORT).show()
                     }
                     .setNegativeButton("Cancel") { dialog, which ->

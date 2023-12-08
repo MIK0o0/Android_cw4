@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="@string/radio_tab" />
+        android:text="Choose image" />
 
     <RadioGroup
         android:id="@+id/edit_radio"
@@ -31,21 +31,21 @@
             android:layout_height="wrap_content"
             android:checked="true"
             android:gravity="center_horizontal"
-            android:text="@string/img1" />
+            android:text="Human" />
 
         <RadioButton
             android:id="@+id/edit_img2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="@string/img2" />
+            android:text="Bird" />
 
         <RadioButton
             android:id="@+id/edit_img3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="@string/img3" />
+            android:text="Fish" />
     </RadioGroup>
 
     <Button
