@@ -10,9 +10,13 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.SeekBar
+import androidx.fragment.app.activityViewModels
+import com.example.l4_andro.Data.DataItem
 import com.example.l4_andro.databinding.FragmentModifyBinding
 
 class ModifyFragment : Fragment() {
+    val viewModel: MyViewModel by activityViewModels()
+    private var modifyItem: DataItem? = null
     lateinit var _binding: FragmentModifyBinding
     lateinit var editName: EditText
     lateinit var editSpec: EditText
@@ -21,7 +25,6 @@ class ModifyFragment : Fragment() {
     lateinit var editDanger: CheckBox
     lateinit var saveButton: Button
     lateinit var cancelButton: Button
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,27 +49,39 @@ class ModifyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        parentFragmentManager.setFragmentResultListener("msgtoedit", viewLifecycleOwner) { _, bundle ->
-            run {
-                editName.setText(bundle.getString("name"))
-                editSpec.setText(bundle.getString("spec"))
-                editStrength.progress = bundle.getInt("strength")
-                editDanger.isChecked = bundle.getBoolean("danger")
-                when (bundle.getString("type")) {
-                    "Bird" -> _binding.addTypeBird.isChecked = true
-                    "Fish" -> _binding.addTypeFish.isChecked = true
-                    "Mammal" -> _binding.addTypeMammal.isChecked = true
-                }
-            }
+        viewModel.sharedItem.observe(viewLifecycleOwner) { itemData ->
+            modifyItem = itemData
+            mapItemDataToView(modifyItem!!)
+        }
+        saveButton.setOnClickListener {
+            updateDataItem()
+            viewModel.saveItem(modifyItem!!)
+            requireActivity().onBackPressed()
+        }
+        cancelButton.setOnClickListener { requireActivity().onBackPressed() }
+    }
+    private fun mapItemDataToView(modifyItem: DataItem){
+        editName.setText(modifyItem.text_name)
+        editSpec.setText(modifyItem.text_spec)
+        editStrength.progress = modifyItem.item_strength
+        editDanger.isChecked = modifyItem.dangerous
+        when (modifyItem.item_type) {
+            "Bird" -> _binding.addTypeBird.isChecked = true
+            "Fish" -> _binding.addTypeFish.isChecked = true
+            "Mammal" -> _binding.addTypeMammal.isChecked = true
         }
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ModifyFragment().apply {
-                arguments = Bundle().apply {
-                }
-            }
+    private fun updateDataItem(){
+        modifyItem?.setName(editName.text.toString())
+        modifyItem?.setSpec(editSpec.text.toString())
+        modifyItem?.setStrength(editStrength.progress)
+        modifyItem?.setType(when (editType.checkedRadioButtonId) {
+            _binding.addTypeBird.id -> "Bird"
+            _binding.addTypeFish.id -> "Fish"
+            _binding.addTypeMammal.id -> "Mammal"
+            else -> "Bird"
+        })
+        modifyItem?.setDanger(editDanger.isChecked)
     }
 }

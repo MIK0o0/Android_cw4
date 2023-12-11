@@ -36,6 +36,22 @@ class DataItem {
 
     }
 
+    fun setName(name: String) {
+        this.text_name = name
+    }
+    fun setSpec(spec: String) {
+        this.text_spec = spec
+    }
+    fun setStrength(strength: Int) {
+        this.item_strength = strength
+    }
+    fun setType(type: String) {
+        this.item_type = type
+    }
+    fun setDanger(danger: Boolean) {
+        this.dangerous = danger
+    }
+
     override fun toString(): String {
         return "DataItem(id=$id, text_name='$text_name', text_spec='$text_spec', item_strength=$item_strength, item_type='$item_type', dangerous=$dangerous)"
     }

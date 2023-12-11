@@ -30,11 +30,6 @@ class ShowFragment : Fragment() {
     lateinit var showDanger: CheckBox
     lateinit var returnButton: Button
     lateinit var editButton: Button
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,21 +50,12 @@ class ShowFragment : Fragment() {
         viewModel.sharedItem.observe(viewLifecycleOwner) { itemData ->
             mapItemDataToView(itemData)
         }
-
-        returnButton.setOnClickListener { requireActivity().onBackPressed() }
         editButton.setOnClickListener {
-            parentFragmentManager.setFragmentResult("msgtoedit", bundleOf(
-                "name" to showName.text.toString(),
-                "spec" to showSpec.text.toString(),
-                "danger" to showDanger.isChecked,
-                "strength" to showStrength.progress,
-                "type" to showType.toString())
-            )
             findNavController().navigate(R.id.action_show_frag_to_modifyFragment)
         }
+        returnButton.setOnClickListener { requireActivity().onBackPressed() }
     }
 
-    //write method to map itemData to view elements
     private fun mapItemDataToView(itemData: DataItem) {
         showName.text = itemData.text_name
         showSpec.text = itemData.text_spec

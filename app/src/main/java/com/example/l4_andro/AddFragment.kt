@@ -1,6 +1,5 @@
 package com.example.l4_andro
 
-import android.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,8 +14,6 @@ import androidx.fragment.app.Fragment
 import com.example.l4_andro.Data.DataItem
 import com.example.l4_andro.Data.DataRepo
 import com.example.l4_andro.databinding.FragmentAddBinding
-import androidx.navigation.fragment.findNavController
-
 
 class AddFragment : Fragment() {
     lateinit var _binding: FragmentAddBinding
@@ -78,7 +75,6 @@ class AddFragment : Fragment() {
 
         saveButton.setOnClickListener {
             if (DataRepo.getInstance().addItem(createItem())) {
-//            if (DataRepo.getInstance(requireContext()).addItem(createItem())) {
                 parentFragmentManager.setFragmentResult("addNewItem", Bundle.EMPTY)
                 requireActivity().onBackPressed()
             }

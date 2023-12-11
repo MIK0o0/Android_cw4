@@ -13,6 +13,10 @@ class MyViewModel : ViewModel() {
 
     fun updateItem(newItem: DataItem) {
         _sharedItem.value = newItem
-//        dataRepo.updateItem(newItem)
+    }
+
+    fun saveItem(newItem: DataItem) {
+        _sharedItem.value = newItem
+        dataRepo.updateItem(newItem)
     }
 }
