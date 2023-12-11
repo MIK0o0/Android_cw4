@@ -35,6 +35,10 @@ class DataItem {
         dangerous = danger
 
     }
+
+    override fun toString(): String {
+        return "DataItem(id=$id, text_name='$text_name', text_spec='$text_spec', item_strength=$item_strength, item_type='$item_type', dangerous=$dangerous)"
+    }
 }
 
 

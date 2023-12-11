@@ -22,6 +22,7 @@
         android:id="@+id/add_frag"
         android:name="com.example.l4_andro.AddFragment"
         android:label="Add element"
+        app:launchSingleTop="true"
         tools:layout="@layout/fragment_add" />
     <fragment
         android:id="@+id/swipe_frag"
@@ -32,7 +33,11 @@
         android:id="@+id/show_frag"
         android:name="com.example.l4_andro.ShowFragment"
         android:label="Element data"
-        tools:layout="@layout/fragment_show" />
+        tools:layout="@layout/fragment_show" >
+        <action
+            android:id="@+id/action_show_frag_to_modifyFragment"
+            app:destination="@id/modifyFragment" />
+    </fragment>
     <fragment
         android:id="@+id/main_frag"
         android:name="com.example.l4_andro.MainFragment"
@@ -63,4 +68,9 @@
         android:name="com.example.l4_andro.Fragment2"
         android:label="fragment_2"
         tools:layout="@layout/fragment_2" />
+    <fragment
+        android:id="@+id/modifyFragment"
+        app:launchSingleTop="true"
+        android:name="com.example.l4_andro.ModifyFragment"
+        android:label="ModifyFragment" />
 </navigation>

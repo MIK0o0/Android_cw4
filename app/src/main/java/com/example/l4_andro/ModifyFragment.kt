@@ -5,27 +5,27 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.RadioGroup
+import android.widget.SeekBar
+import com.example.l4_andro.databinding.FragmentModifyBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ModifyFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ModifyFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    lateinit var _binding: FragmentModifyBinding
+    lateinit var editName: EditText
+    lateinit var editSpec: EditText
+    lateinit var editStrength: SeekBar
+    lateinit var editType: RadioGroup
+    lateinit var editDanger: CheckBox
+    lateinit var saveButton: Button
+    lateinit var cancelButton: Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
         }
     }
 
@@ -33,26 +33,39 @@ class ModifyFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_modify, container, false)
+        _binding = FragmentModifyBinding.inflate(inflater, container, false)
+        editName = _binding.addName
+        editSpec = _binding.addSpec
+        editStrength = _binding.addStrengthBar
+        editType = _binding.addRadio
+        editDanger = _binding.addDanger
+        saveButton = _binding.addSaveButton
+        cancelButton = _binding.addCancelButton
+        return _binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        parentFragmentManager.setFragmentResultListener("msgtoedit", viewLifecycleOwner) { _, bundle ->
+            run {
+                editName.setText(bundle.getString("name"))
+                editSpec.setText(bundle.getString("spec"))
+                editStrength.progress = bundle.getInt("strength")
+                editDanger.isChecked = bundle.getBoolean("danger")
+                when (bundle.getString("type")) {
+                    "Bird" -> _binding.addTypeBird.isChecked = true
+                    "Fish" -> _binding.addTypeFish.isChecked = true
+                    "Mammal" -> _binding.addTypeMammal.isChecked = true
+                }
+            }
+        }
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ModifyFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             ModifyFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
                 }
             }
     }

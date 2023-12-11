@@ -13,6 +13,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -42,7 +44,8 @@ class ListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        dataRepo = DataRepo.getInstance(requireContext())
+        dataRepo = DataRepo.getInstance()
+//        dataRepo = DataRepo.getInstance(requireContext())
         adapter = MyAdapter(dataRepo.getData()!!)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
@@ -57,8 +60,6 @@ class ListFragment : Fragment() {
         _binding = FragmentListBinding.inflate(inflater,container,false)
         val recView = _binding.recView
         recView.layoutManager = LinearLayoutManager(requireContext())
-
-//        val adapter = DataRepo.getInstance().getData()?.let { MyAdapter(it) }
         recView.adapter = adapter
 
         return _binding.root
@@ -66,27 +67,10 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        parentFragmentManager.setFragmentResultListener("addNewItem", viewLifecycleOwner){ string, bundle ->
-//            run {
-//                if (bundle.getBoolean("toAdd")){
-//                    val itemName = bundle.getString("name", "New animal")
-//                    val itemSpec = bundle.getString("spec", "Some spec")
-//                    val itemStrength = bundle.getInt("strength", 10)
-//                    val itemDanger = bundle.getBoolean("danger", false)
-//                    val itemType = bundle.getString("type", "Bird")
-//                    val newItem = DataItem(itemName, itemSpec, itemStrength, itemType, itemDanger)
-//                    dataRepo.addItem(newItem)
-//                }
-//            }
-//        }
-        parentFragmentManager.setFragmentResultListener("addNewItem", this) {
-                requestKey, _ ->
+        parentFragmentManager.setFragmentResultListener("addNewItem", this) { _, _ ->
             adapter.data = dataRepo.getData()!!
             adapter.notifyDataSetChanged()
         }
-
-        val humanoids = arrayOf("Bird", "Fish", "Mammal")
-
         setHasOptionsMenu(true)
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -106,6 +90,8 @@ class ListFragment : Fragment() {
 
     inner class MyAdapter(var data: MutableList<DataItem>) :
         RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+
+        private val viewModel: MyViewModel by activityViewModels()
         inner class MyViewHolder(viewBinding : ListItemBinding) :
             RecyclerView.ViewHolder(viewBinding.root) {
             val txt1: TextView = viewBinding.itemTitle
@@ -125,20 +111,22 @@ class ListFragment : Fragment() {
 
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
             var currData = data[position]
+//            viewModel.updateItem(currData)
+//            println(viewModel.sharedItem.value?.toString())
             holder.txt1.text = currData.text_name
             holder.txt2.text = if (currData.text_spec=="Default specification"){
                 (currData.item_type + " " + currData.text_spec +" "+ currData.item_strength)
                 }else{currData.text_spec}
             holder.itemView.setOnClickListener {
-                parentFragmentManager.setFragmentResult("msgtochild", bundleOf(
-                    "name" to currData.text_name,
-                    "spec" to currData.text_spec,
-                    "strength" to currData.item_strength,
-                    "danger" to currData.dangerous,
-                    "type" to currData.item_type
-//                    "humanoids" to currData.humanoids
-                    )
-                )
+                viewModel.updateItem(currData)
+//                parentFragmentManager.setFragmentResult("msgtochild", bundleOf(
+//                    "name" to currData.text_name,
+//                    "spec" to currData.text_spec,
+//                    "strength" to currData.item_strength,
+//                    "danger" to currData.dangerous,
+//                    "type" to currData.item_type
+//                    )
+//                )
                 findNavController().navigate(R.id.action_listFragment_to_showFragment)
             }
             holder.itemView.setOnLongClickListener {
@@ -176,13 +164,7 @@ class ListFragment : Fragment() {
             }
         }
     }
-
-
-
-
     companion object {
-        //val publicRepo = this.dataRepo
-
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             ListFragment().apply {

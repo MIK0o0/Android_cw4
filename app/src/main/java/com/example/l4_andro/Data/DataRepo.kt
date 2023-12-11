@@ -2,27 +2,34 @@ package com.example.l4_andro.Data
 
 import android.content.Context
 
-class DataRepo(context: Context) {
+class DataRepo() {
     private val LIST_SIZE = 2
     private var dataList: MutableList<DataItem>? = null
-    private var myDao: MyDao
-    private var db: MyDB
+    private lateinit var myDao: MyDao
+    private lateinit var db: MyDB
 
     companion object {
         private var INSTANCE: DataRepo? = null
 
-        fun getInstance(context: Context): DataRepo {
-            if (INSTANCE == null) {
-                INSTANCE = DataRepo(context)
-            }
+         fun getInstance(): DataRepo {
             return INSTANCE as DataRepo
+        }
+        private fun init(context: Context) {
+            if (INSTANCE == null) {
+                INSTANCE = DataRepo(context, true)
+            }
         }
     }
 
-    init {
+    //create private constructor
+    private constructor(context: Context, isPrivate: Boolean) : this() {
         db = MyDB.getDatabase(context)!!
         myDao = db.myDao()!!
         dataList = MutableList(LIST_SIZE) { i -> DataItem(i) }
+    }
+
+    constructor(context: Context) : this() {
+        init(context)
     }
 
     fun getData() : MutableList<DataItem>? {

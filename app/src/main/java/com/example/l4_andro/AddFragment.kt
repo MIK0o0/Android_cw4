@@ -1,7 +1,7 @@
 package com.example.l4_andro
 
+import android.R
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +11,11 @@ import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.SeekBar
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import com.example.l4_andro.Data.DataItem
 import com.example.l4_andro.Data.DataRepo
 import com.example.l4_andro.databinding.FragmentAddBinding
+import androidx.navigation.fragment.findNavController
 
 
 class AddFragment : Fragment() {
@@ -23,7 +25,6 @@ class AddFragment : Fragment() {
     lateinit var addStrength: SeekBar
     lateinit var addType: RadioGroup
     lateinit var addDanger: CheckBox
-
     lateinit var saveButton: Button
     lateinit var cancelButton: Button
 
@@ -31,7 +32,6 @@ class AddFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-
         }
     }
 
@@ -39,7 +39,6 @@ class AddFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         _binding = FragmentAddBinding.inflate(inflater, container, false)
         addName = _binding.addName
         addSpec = _binding.addSpec
@@ -62,7 +61,6 @@ class AddFragment : Fragment() {
             }
         }
 
-        //going back without changes
         cancelButton.setOnClickListener {
             parentFragmentManager.setFragmentResult(
                 "addNewItem", bundleOf(
@@ -73,36 +71,17 @@ class AddFragment : Fragment() {
         }
 
         fun createItem(): DataItem {
-            val name: String = if (addName.text.toString() == "") {
-                "Default name"
-            } else {
-                addName.text.toString()
-            }
-            val spec: String = if (addSpec.text.toString() == "") {
-                "Default spec"
-            } else {
-                addSpec.text.toString()
-            }
+            val name: String = if (addName.text.toString() == "") "Default name" else addName.text.toString()
+            val spec: String = if (addSpec.text.toString() == "") "Default spec" else addSpec.text.toString()
             return DataItem(name, spec, addStrength.progress, race, addDanger.isChecked)
         }
 
         saveButton.setOnClickListener {
-            if (DataRepo.getInstance(requireContext()).addItem(createItem())) {
+            if (DataRepo.getInstance().addItem(createItem())) {
+//            if (DataRepo.getInstance(requireContext()).addItem(createItem())) {
                 parentFragmentManager.setFragmentResult("addNewItem", Bundle.EMPTY)
                 requireActivity().onBackPressed()
             }
         }
-
-
-
-//        companion object {
-//            @JvmStatic
-//            fun newInstance(param1: String, param2: String) =
-//                AddFragment().apply {
-//                    arguments = Bundle().apply {
-//
-//                    }
-//                }
-//        }
     }
 }
