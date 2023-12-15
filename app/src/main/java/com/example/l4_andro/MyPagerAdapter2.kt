@@ -9,7 +9,6 @@ class MyPagerAdapter2(fa: FragmentActivity) : FragmentStateAdapter(fa) {
     override fun getItemCount(): Int = 2
 
     override fun createFragment(position: Int): Fragment {
-        // Return the proper fragment for each position value
         return when(position) {
             0 -> Fragment1()
             1 -> Fragment2()

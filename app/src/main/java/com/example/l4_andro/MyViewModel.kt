@@ -8,8 +8,10 @@ import com.example.l4_andro.Data.DataRepo
 
 class MyViewModel : ViewModel() {
     private val _sharedItem = MutableLiveData<DataItem>()
+    private val _sharedList = MutableLiveData<MutableList<DataItem>>()
     private val dataRepo = DataRepo.getInstance()
     val sharedItem: LiveData<DataItem> get() = _sharedItem
+    val sharedList: LiveData<MutableList<DataItem>> get() = _sharedList
 
     fun updateItem(newItem: DataItem) {
         _sharedItem.value = newItem
@@ -18,5 +20,9 @@ class MyViewModel : ViewModel() {
     fun saveItem(newItem: DataItem) {
         _sharedItem.value = newItem
         dataRepo.updateItem(newItem)
+    }
+
+    fun updateList() {
+        _sharedList.value = dataRepo.getData()
     }
 }

@@ -73,17 +73,17 @@
         android:id="@+id/add_danger"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="64dp"
         android:text="@string/show_danger"
         app:layout_constraintStart_toEndOf="@+id/add_radio"
         app:layout_constraintTop_toBottomOf="@+id/add_strength_bar" />
 
     <RadioGroup
         android:id="@+id/add_radio"
-        android:layout_width="220dp"
+        android:layout_width="136dp"
         android:layout_height="145dp"
-        android:layout_marginStart="25dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
         android:checkedButton="@id/add_type_bird"
         app:layout_constraintStart_toStartOf="parent"

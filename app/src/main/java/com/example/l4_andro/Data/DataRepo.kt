@@ -3,7 +3,6 @@ package com.example.l4_andro.Data
 import android.content.Context
 
 class DataRepo() {
-    private val LIST_SIZE = 2
     private var dataList: MutableList<DataItem>? = null
     private lateinit var myDao: MyDao
     private lateinit var db: MyDB
@@ -25,7 +24,6 @@ class DataRepo() {
     private constructor(context: Context, isPrivate: Boolean) : this() {
         db = MyDB.getDatabase(context)!!
         myDao = db.myDao()!!
-        dataList = MutableList(LIST_SIZE) { i -> DataItem(i) }
     }
 
     constructor(context: Context) : this() {

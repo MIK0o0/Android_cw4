@@ -41,12 +41,13 @@ class ListFragment : Fragment() {
     private lateinit var _binding: FragmentListBinding
     private lateinit var dataRepo: DataRepo
     private lateinit var adapter: MyAdapter
+    private val viewModel: MyViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dataRepo = DataRepo.getInstance()
-//        dataRepo = DataRepo.getInstance(requireContext())
-        adapter = MyAdapter(dataRepo.getData()!!)
+        viewModel.updateList()
+        adapter = MyAdapter(viewModel.sharedList.value!!)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
@@ -111,22 +112,13 @@ class ListFragment : Fragment() {
 
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
             var currData = data[position]
-//            viewModel.updateItem(currData)
-//            println(viewModel.sharedItem.value?.toString())
             holder.txt1.text = currData.text_name
             holder.txt2.text = if (currData.text_spec=="Default specification"){
                 (currData.item_type + " " + currData.text_spec +" "+ currData.item_strength)
                 }else{currData.text_spec}
             holder.itemView.setOnClickListener {
                 viewModel.updateItem(currData)
-//                parentFragmentManager.setFragmentResult("msgtochild", bundleOf(
-//                    "name" to currData.text_name,
-//                    "spec" to currData.text_spec,
-//                    "strength" to currData.item_strength,
-//                    "danger" to currData.dangerous,
-//                    "type" to currData.item_type
-//                    )
-//                )
+
                 findNavController().navigate(R.id.action_listFragment_to_showFragment)
             }
             holder.itemView.setOnLongClickListener {
