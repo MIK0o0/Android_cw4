@@ -25,11 +25,6 @@
         app:launchSingleTop="true"
         tools:layout="@layout/fragment_add" />
     <fragment
-        android:id="@+id/swipe_frag"
-        android:name="com.example.l4_andro.SwipeFragment"
-        android:label="Swipe fragment"
-        tools:layout="@layout/fragment_swipe" />
-    <fragment
         android:id="@+id/show_frag"
         android:name="com.example.l4_andro.ShowFragment"
         android:label="Element data"
@@ -55,7 +50,7 @@
         app:popUpTo="@id/main_frag" />
     <action
         android:id="@+id/action_global_swipeFragment"
-        app:destination="@id/swipe_frag"
+        app:destination="@id/photoListFragment"
         app:launchSingleTop="true"
         app:popUpTo="@id/main_frag" />
     <fragment
@@ -73,4 +68,8 @@
         app:launchSingleTop="true"
         android:name="com.example.l4_andro.ModifyFragment"
         android:label="ModifyFragment" />
+    <fragment
+        android:id="@+id/photoListFragment"
+        android:name="com.example.l4_andro.PhotoListFragment"
+        android:label="PhotoListFragment" />
 </navigation>

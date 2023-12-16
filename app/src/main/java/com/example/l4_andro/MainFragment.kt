@@ -3,6 +3,8 @@ package com.example.l4_andro
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +19,8 @@ class MainFragment : Fragment() {
     lateinit var authorSurname: TextView
     lateinit var imageMain: ImageView
     lateinit var setting: TextView
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +43,12 @@ class MainFragment : Fragment() {
         return view.root
     }
     fun applyData(){
+        var basePhotoUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        val dir2 = Environment.getExternalStorageDirectory()
+        val dir3 = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+        val dir4 = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val directoryInfo = "dir2: $dir2\ndir3: $dir3\ndir4: $dir4"
+
         val data: SharedPreferences = requireActivity().getSharedPreferences("L4_preferences", Context.MODE_PRIVATE)
         invitation.text = data.getString("invitation", "Fragment to start on")
         authorName.text = data.getString("authorName", "Mikołaj")
@@ -46,7 +56,7 @@ class MainFragment : Fragment() {
         imageMain.setImageResource(data.getInt("image", R.drawable.baseline_emoji_people_24))
 
         val data2: SharedPreferences = requireActivity().getSharedPreferences("additional", Context.MODE_PRIVATE)
-        setting.text = data2.getString("str2", "Additional setting")
+        setting.text = directoryInfo
 
     }
 
