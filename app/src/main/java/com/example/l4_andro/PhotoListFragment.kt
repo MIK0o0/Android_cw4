@@ -1,12 +1,25 @@
 package com.example.l4_andro
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.view.*
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.l4_andro.Photos.PhotoRepo
 import com.example.l4_andro.databinding.FragmentPhotoListBinding
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class PhotoListFragment : Fragment() {
 
@@ -52,7 +65,22 @@ class PhotoListFragment : Fragment() {
             adapter.submitList(photoList)
             recyclerView.adapter = adapter
         }
+        setHasOptionsMenu(true)
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_add_photo, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId){
+            R.id.menu_photo_add -> {
+                findNavController().navigate(R.id.takePhotoFragment)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 
 
 }

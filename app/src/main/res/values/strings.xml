@@ -5,7 +5,7 @@
     <string name="header_title">Here are all the fragments:</string>
     <string name="header_icon_alt">Header drawer icon</string>
     <string name="menuC">Main fragment</string>
-    <string name="menuL">Swipe fragment</string>
+    <string name="menuL">Photos fragment</string>
     <string name="menuR">List fragment</string>
 
 

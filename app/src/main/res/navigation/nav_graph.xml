@@ -54,16 +54,6 @@
         app:launchSingleTop="true"
         app:popUpTo="@id/main_frag" />
     <fragment
-        android:id="@+id/fragment1"
-        android:name="com.example.l4_andro.Fragment1"
-        android:label="fragment_1"
-        tools:layout="@layout/fragment_1" />
-    <fragment
-        android:id="@+id/fragment2"
-        android:name="com.example.l4_andro.Fragment2"
-        android:label="fragment_2"
-        tools:layout="@layout/fragment_2" />
-    <fragment
         android:id="@+id/modifyFragment"
         app:launchSingleTop="true"
         android:name="com.example.l4_andro.ModifyFragment"
@@ -72,4 +62,9 @@
         android:id="@+id/photoListFragment"
         android:name="com.example.l4_andro.PhotoListFragment"
         android:label="PhotoListFragment" />
+    <fragment
+        android:id="@+id/takePhotoFragment"
+        android:name="com.example.l4_andro.TakePhotoFragment"
+        android:label="fragment_take_photo"
+        tools:layout="@layout/fragment_take_photo" />
 </navigation>
