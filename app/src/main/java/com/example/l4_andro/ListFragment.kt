@@ -12,15 +12,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.l4_andro.Data.DataItem
 import com.example.l4_andro.Data.DataRepo
-import com.example.l4_andro.Data.MyDB
 import com.example.l4_andro.databinding.FragmentListBinding
 import com.example.l4_andro.databinding.ListItemBinding
 import com.example.l4_andro.databinding.DialogLayoutBinding
@@ -93,6 +90,7 @@ class ListFragment : Fragment() {
         RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
         private val viewModel: MyViewModel by activityViewModels()
+
         inner class MyViewHolder(viewBinding : ListItemBinding) :
             RecyclerView.ViewHolder(viewBinding.root) {
             val txt1: TextView = viewBinding.itemTitle

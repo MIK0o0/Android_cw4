@@ -5,10 +5,12 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.util.Size
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +19,9 @@ import com.example.l4_andro.databinding.PhotoItemBinding
 import java.io.FileNotFoundException
 import java.io.InputStream
 
+
 class PhotoListAdapter(private var appContext: Context) : ListAdapter<Photo, PhotoListAdapter.MyViewHolder>(PhotoDiffCallback()) {
+
 
     inner class MyViewHolder(viewBinding: PhotoItemBinding) :
         RecyclerView.ViewHolder(viewBinding.root) {
@@ -39,6 +43,13 @@ class PhotoListAdapter(private var appContext: Context) : ListAdapter<Photo, Pho
         } else {
             holder.img.setImageBitmap(getBitmapFromUri(appContext, photo.curi))
         }
+
+        holder.img.setOnClickListener{
+            findNavController(holder.itemView).navigate(R.id.action_photoListFragment_to_photoSlider, Bundle().apply {
+                putString("path", photo.uripath)
+            })
+        }
+
     }
 
     fun getBitmapFromUri(mContext: Context, uri: Uri?): Bitmap? {
