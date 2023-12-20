@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity() {
 
     private val REQUIRED_PERMISSIONS = mutableListOf(
         android.Manifest.permission.CAMERA,
-        android.Manifest.permission.READ_MEDIA_IMAGES,
     ).apply {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
             add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -40,6 +39,9 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
             add(android.Manifest.permission.READ_EXTERNAL_STORAGE)
         }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            add(android.Manifest.permission.READ_MEDIA_IMAGES)
+//        }
     }.toTypedArray()
     private val REQUEST_CODE = 123
 

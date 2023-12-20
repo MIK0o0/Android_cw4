@@ -52,6 +52,7 @@ class TakePhotoFragment : Fragment() {
             // consume result - see later remarks
             Toast.makeText(requireContext(),"Photo TAKEN",Toast.LENGTH_LONG).show()
             saveImageToExternalStorage()
+//            saveImageToInternalStorage()
         }else
         // make some action – warning
         Toast.makeText(requireContext(), "Photo NOT taken!", Toast.LENGTH_LONG).show()
@@ -60,8 +61,10 @@ class TakePhotoFragment : Fragment() {
 
     private fun saveImageToExternalStorage() {
         if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()) {
-            val externalStorageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+            val externalStorageDir =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM + "/Camera")
             val newFile = File(externalStorageDir, lastFile.name)
+
 
             var fis: FileInputStream? = null
             var fos: FileOutputStream? = null
@@ -81,9 +84,40 @@ class TakePhotoFragment : Fragment() {
                 fis?.close()
                 fos?.close()
             }
+            MediaStore.Images.Media.insertImage(requireActivity().contentResolver, newFile.path, newFile.name, newFile.name)
+
 
             lastFile.delete()
+        } else{
+            Toast.makeText(requireContext(), "External storage not available!", Toast.LENGTH_LONG)
+                .show()
         }
+    }
+
+    private fun saveImageToInternalStorage() {
+        val internalStorageDir = requireActivity().filesDir
+        val newFile = File(internalStorageDir, lastFile.name)
+
+        var fis: FileInputStream? = null
+        var fos: FileOutputStream? = null
+
+        try {
+            fis = FileInputStream(lastFile)
+            fos = FileOutputStream(newFile)
+
+            val buffer = ByteArray(1024)
+            var length: Int
+            while (fis.read(buffer).also { length = it } > 0) {
+                fos.write(buffer, 0, length)
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } finally {
+            fis?.close()
+            fos?.close()
+        }
+
+        lastFile.delete()
     }
 
 
@@ -113,9 +147,10 @@ class TakePhotoFragment : Fragment() {
 
     private fun getNewFileUri(): Uri {
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        val storageDir: File? = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val storageDir: File? = requireActivity().getExternalFilesDir(Environment.DIRECTORY_DCIM + "/Camera")
+//        val storageDir: File? = requireActivity().filesDir
         val imageFile = File.createTempFile(
-            "JPEG_${timeStamp}_",
+            "IMG_${timeStamp}_",
             ".jpg",
             storageDir
         )
