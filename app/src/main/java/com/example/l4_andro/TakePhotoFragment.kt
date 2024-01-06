@@ -28,8 +28,6 @@ import java.util.Date
 import java.util.Locale
 
 class TakePhotoFragment : Fragment() {
-    private val REQUEST_IMAGE_CAPTURE = 1
-    private lateinit var currentPhotoPath: String
     private lateinit var viewBinding: FragmentTakePhotoBinding
     private lateinit var lastFileUri: Uri
 
@@ -52,7 +50,6 @@ class TakePhotoFragment : Fragment() {
             // consume result - see later remarks
             Toast.makeText(requireContext(),"Photo TAKEN",Toast.LENGTH_LONG).show()
             saveImageToExternalStorage()
-//            saveImageToInternalStorage()
         }else
         // make some action – warning
         Toast.makeText(requireContext(), "Photo NOT taken!", Toast.LENGTH_LONG).show()
@@ -62,7 +59,7 @@ class TakePhotoFragment : Fragment() {
     private fun saveImageToExternalStorage() {
         if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()) {
             val externalStorageDir =
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM + "/Camera")
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
             val newFile = File(externalStorageDir, lastFile.name)
 
 
@@ -116,7 +113,7 @@ class TakePhotoFragment : Fragment() {
             fis?.close()
             fos?.close()
         }
-
+        MediaStore.Images.Media.insertImage(requireActivity().contentResolver, newFile.path, newFile.name, newFile.name)
         lastFile.delete()
     }
 
@@ -147,7 +144,7 @@ class TakePhotoFragment : Fragment() {
 
     private fun getNewFileUri(): Uri {
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        val storageDir: File? = requireActivity().getExternalFilesDir(Environment.DIRECTORY_DCIM + "/Camera")
+        val storageDir: File? = requireActivity().getExternalFilesDir(Environment.DIRECTORY_DCIM)
 //        val storageDir: File? = requireActivity().filesDir
         val imageFile = File.createTempFile(
             "IMG_${timeStamp}_",

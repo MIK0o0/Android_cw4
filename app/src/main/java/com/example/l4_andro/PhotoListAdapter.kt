@@ -26,6 +26,7 @@ class PhotoListAdapter(private var appContext: Context) : ListAdapter<Photo, Pho
     inner class MyViewHolder(viewBinding: PhotoItemBinding) :
         RecyclerView.ViewHolder(viewBinding.root) {
         val img: ImageView = viewBinding.itemImg
+        val imageTitle = viewBinding.imageTitle
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -49,6 +50,7 @@ class PhotoListAdapter(private var appContext: Context) : ListAdapter<Photo, Pho
                 putString("path", photo.uripath)
             })
         }
+        holder.imageTitle.text = photo.name
 
     }
 

@@ -6,11 +6,31 @@
     android:gravity="center_horizontal"
     android:paddingBottom="5dp">
 
-    <ImageView
-        android:id="@+id/itemImg"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_margin="5dp"
-        android:scaleType="fitXY" />
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/itemImg"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_margin="5dp"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:id="@+id/imageTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TextView"
+            android:layout_gravity="center"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
 
 </LinearLayout>
